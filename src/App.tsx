@@ -1,6 +1,7 @@
 import React from 'react';
 import { Global, css } from '@emotion/core'
 import { BrowserRouter as Router, Route, Switch, Link } from 'react-router-dom'
+import AccordionPage from './01-accordion'
 
 const App: React.FC = () => {
   return (
@@ -15,14 +16,9 @@ const App: React.FC = () => {
         }
       `}/>
       <Router>
-        <ul>
-          <li>
-            <Link to='/accordion'>Accordion</Link>
-            <Link to='/'>Menu</Link>
-          </li>
-        </ul>
+        <Link to='/'>Menu</Link>
         <Switch>
-          <Route path='/accordion' component={DetailPage}/>
+          <Route path='/accordion' component={AccordionPage}/>
           <Route path='/' component={ListPage}/>
         </Switch>
       </Router>
@@ -30,12 +26,12 @@ const App: React.FC = () => {
   );
 }
 
-const DetailPage = () => {
-  return <div>DetailPage</div>
-}
-
 const ListPage = () => {
-  return <p>ListPage</p>
+  return <ul>
+    <li>
+      <Link to='/accordion'>Accordion</Link>
+    </li>
+  </ul>
 }
 
 export default App;
