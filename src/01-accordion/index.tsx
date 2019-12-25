@@ -1,8 +1,9 @@
 import React, { useState, useCallback } from 'react'
 import { motion } from 'framer-motion'
 import styled from '@emotion/styled/macro'
-import { Link } from 'react-router-dom'
 import { ChevronDown } from 'react-feather'
+
+import HeroHeader from '../00-components/HeroHeader'
 
 const AccordionList = styled.ul`
   padding: 20px 16px;
@@ -11,42 +12,14 @@ const AccordionList = styled.ul`
   margin: auto;
 `
 
-const Hero = styled.header`
-  padding: 200px 16px 16px;
-  background-color: #3799de;
-  color: white;
-  user-select: none;
-`
-
-const Title = styled.h1`
-  font-size: 32px;
-  font-weight: 700;
-`
-
-const Description = styled.h1`
-  font-size: 16px;
-  opacity: 0.8;
-  margin-top: 2px;
-`
-
-const Back = styled(Link)`
-  position: fixed;
-  top: 16px;
-  left: 16px;
-  background-color: rgba(255, 255, 255, 0.9);
-  border-radius: 30px;
-  padding: 10px 20px;
-  text-decoration: none;
-`
-
 const DetailPage = () => {
   return (
     <>
-      <Back to="/">Back</Back>
-      <Hero>
-        <Title>Accordion</Title>
-        <Description>Theme: Q&amp;A</Description>
-      </Hero>
+      <HeroHeader
+        title="Accordion"
+        description="Theme: Q&amp;A"
+        color="#3799de"
+      />
       <AccordionList>
         <Accodion label="このサイトはなんのサイトですか？">
           Reactで要素を動かすサンプル集です。
