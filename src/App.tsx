@@ -1,5 +1,6 @@
 import React from 'react';
 import { Global, css } from '@emotion/core'
+import { BrowserRouter as Router, Route, Switch, Link } from 'react-router-dom'
 
 const App: React.FC = () => {
   return (
@@ -13,11 +14,28 @@ const App: React.FC = () => {
           -moz-osx-font-smoothing: grayscale;
         }
       `}/>
-      <p>
-        Edit <code>src/App.tsx</code> and save to reload.
-      </p>
+      <Router>
+        <ul>
+          <li>
+            <Link to='/accordion'>Accordion</Link>
+            <Link to='/'>Menu</Link>
+          </li>
+        </ul>
+        <Switch>
+          <Route path='/accordion' component={DetailPage}/>
+          <Route path='/' component={ListPage}/>
+        </Switch>
+      </Router>
     </div>
   );
+}
+
+const DetailPage = () => {
+  return <div>DetailPage</div>
+}
+
+const ListPage = () => {
+  return <p>ListPage</p>
 }
 
 export default App;
