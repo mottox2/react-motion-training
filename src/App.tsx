@@ -4,6 +4,8 @@ import { BrowserRouter as Router, Route, Switch, Link } from 'react-router-dom'
 import AccordionPage from './01-accordion'
 import ViewPager from './02-viewPager'
 import ItemLink from './00-components/ItemLink'
+import Stack from './00-components/Stack'
+import { AnimatePresence } from 'framer-motion'
 
 const App: React.FC = () => {
   return (
@@ -22,11 +24,43 @@ const App: React.FC = () => {
         `}
       />
       <Router>
-        <Switch>
-          <Route path="/view-pager" component={ViewPager} />
-          <Route path="/accordion" component={AccordionPage} />
-          <Route path="/" component={ListPage} />
-        </Switch>
+        <Route
+          render={({ location }) => (
+            // <AnimatePresence exitBeforeEnter initial={false}>
+            <AnimatePresence exitBeforeEnter initial={false}>
+              <Switch location={location} key={location.pathname}>
+                <Route
+                  path="/view-pager"
+                  component={() => (
+                    <Stack>
+                      <ViewPager />
+                    </Stack>
+                  )}
+                />
+                <Route
+                  path="/accordion"
+                  component={() => (
+                    <Stack>
+                      <AccordionPage />
+                    </Stack>
+                  )}
+                />
+                <Route
+                  path="/"
+                  component={(props: any) => {
+                    // const state = props.location.state
+                    const state = { back: true }
+                    return (
+                      <Stack state={state}>
+                        <ListPage />
+                      </Stack>
+                    )
+                  }}
+                />
+              </Switch>
+            </AnimatePresence>
+          )}
+        />
       </Router>
     </div>
   )
