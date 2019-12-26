@@ -3,6 +3,7 @@ import { Global, css } from '@emotion/core'
 import { BrowserRouter as Router, Route, Switch, Link } from 'react-router-dom'
 import AccordionPage from './01-accordion'
 import ViewPager from './02-viewPager'
+import ItemLink from './00-components/ItemLink'
 
 const App: React.FC = () => {
   return (
@@ -35,8 +36,8 @@ const ListPage = () => {
   return (
     <ul>
       <li>
-        <Link to="/accordion">Accordion</Link>
-        <Link to="/view-pager">ViewPager</Link>
+        <ItemLink to="/accordion">Accordion</ItemLink>
+        <ItemLink to="/view-pager">ViewPager</ItemLink>
       </li>
     </ul>
   )
