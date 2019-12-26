@@ -2,6 +2,7 @@ import React from 'react'
 import { Global, css } from '@emotion/core'
 import { BrowserRouter as Router, Route, Switch, Link } from 'react-router-dom'
 import AccordionPage from './01-accordion'
+import ViewPager from './02-viewPager'
 
 const App: React.FC = () => {
   return (
@@ -21,6 +22,7 @@ const App: React.FC = () => {
       />
       <Router>
         <Switch>
+          <Route path="/view-pager" component={ViewPager} />
           <Route path="/accordion" component={AccordionPage} />
           <Route path="/" component={ListPage} />
         </Switch>
@@ -34,6 +36,7 @@ const ListPage = () => {
     <ul>
       <li>
         <Link to="/accordion">Accordion</Link>
+        <Link to="/view-pager">ViewPager</Link>
       </li>
     </ul>
   )
