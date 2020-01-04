@@ -3,6 +3,7 @@ import { Global, css } from '@emotion/core'
 import { BrowserRouter as Router, Route, Switch, Link } from 'react-router-dom'
 import AccordionPage from './01-accordion'
 import ViewPager from './02-viewPager'
+import BottomSheet from './03-bottomSheet'
 import ItemLink from './00-components/ItemLink'
 import Stack from './00-components/Stack'
 import { AnimatePresence } from 'framer-motion'
@@ -23,6 +24,15 @@ const routes = [
     component: () => (
       <Stack>
         <ViewPager />
+      </Stack>
+    )
+  },
+  {
+    name: 'BottomSheet',
+    path: '/bottom-sheet',
+    component: () => (
+      <Stack>
+        <BottomSheet />
       </Stack>
     )
   }
