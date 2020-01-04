@@ -7,6 +7,27 @@ import ItemLink from './00-components/ItemLink'
 import Stack from './00-components/Stack'
 import { AnimatePresence } from 'framer-motion'
 
+const routes = [
+  {
+    name: 'Accordion',
+    path: '/accordion',
+    component: () => (
+      <Stack>
+        <AccordionPage />
+      </Stack>
+    )
+  },
+  {
+    name: 'ViewPager',
+    path: '/view-pager',
+    component: () => (
+      <Stack>
+        <ViewPager />
+      </Stack>
+    )
+  }
+]
+
 const App: React.FC = () => {
   return (
     <div>
@@ -29,22 +50,13 @@ const App: React.FC = () => {
             // <AnimatePresence exitBeforeEnter initial={false}>
             <AnimatePresence exitBeforeEnter initial={false}>
               <Switch location={location} key={location.pathname}>
-                <Route
-                  path="/view-pager"
-                  component={() => (
-                    <Stack>
-                      <ViewPager />
-                    </Stack>
-                  )}
-                />
-                <Route
-                  path="/accordion"
-                  component={() => (
-                    <Stack>
-                      <AccordionPage />
-                    </Stack>
-                  )}
-                />
+                {routes.map(route => (
+                  <Route
+                    key={route.path}
+                    path={route.path}
+                    component={route.component}
+                  />
+                ))}
                 <Route
                   path="/"
                   component={(props: any) => {
@@ -69,10 +81,11 @@ const App: React.FC = () => {
 const ListPage = () => {
   return (
     <ul>
-      <li>
-        <ItemLink to="/accordion">Accordion</ItemLink>
-        <ItemLink to="/view-pager">ViewPager</ItemLink>
-      </li>
+      {routes.map(route => (
+        <li key={route.path}>
+          <ItemLink to={route.path}>{route.name}</ItemLink>
+        </li>
+      ))}
     </ul>
   )
 }
