@@ -55,7 +55,10 @@ const FabScreen: React.FC<{
   return (
     <>
       <Fab
-        transition={{ duration: 0.25 }}
+        transition={{
+          duration: 0.3,
+          ease: [0.43, 0.13, 0.23, 0.96]
+        }}
         animate={
           isOpen
             ? {
