@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import AccordionPage from './01-accordion'
 import ViewPager from './02-viewPager'
 import BottomSheet from './03-bottomSheet'
+import FabWithMotion from './04-FabWithMotion'
 import ItemLink from './00-components/ItemLink'
 import Stack from './00-components/Stack'
 import { AnimatePresence } from 'framer-motion'
@@ -35,6 +36,15 @@ const routes = [
     component: () => (
       <Stack>
         <BottomSheet />
+      </Stack>
+    )
+  },
+  {
+    name: 'FAB with motion',
+    path: '/fab-with-motion',
+    component: () => (
+      <Stack>
+        <FabWithMotion />
       </Stack>
     )
   }
