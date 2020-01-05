@@ -27,8 +27,10 @@ const DetailPage = () => {
         description="Material Design Sheet"
         color={mainColor}
       />
-      <div style={{ margin: 16 }}>
-        <Button onClick={() => setOpen(true)}>Open</Button>
+      <div style={{ margin: '0 auto', maxWidth: 720 }}>
+        <div style={{ margin: 16 }}>
+          <Button onClick={() => setOpen(true)}>Open</Button>
+        </div>
       </div>
       <BottomSheet
         isOpen={open}
@@ -92,15 +94,15 @@ const BottomSheet: React.FC<{
                 bottom: 0
               }}
               initial={{
-                y: '100%',
+                height: 0,
                 opacity: 0
               }}
               animate={{
-                y: 0,
+                height: 'auto',
                 opacity: 1
               }}
               exit={{
-                y: '100%',
+                height: 0,
                 opacity: 0
               }}
               transition={{
@@ -111,7 +113,7 @@ const BottomSheet: React.FC<{
                 const { offset, velocity } = info
                 const swipe = swipePower(offset.y, velocity.y)
                 console.log(swipe)
-                if (swipe > 50000) {
+                if ((offset.y > 0 && swipe > 10000) || swipe > 50000) {
                   requestClose()
                 }
               }}
