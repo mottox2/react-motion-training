@@ -3,7 +3,6 @@ import { motion, AnimatePresence, useInvertedScale } from 'framer-motion'
 import styled from '@emotion/styled/macro'
 
 import HeroHeader from '../00-components/HeroHeader'
-import { Global, css } from '@emotion/core'
 import { Plus } from 'react-feather'
 
 const mainColor = '#F57C00'
@@ -13,14 +12,6 @@ const FabWithMotion = () => {
 
   return (
     <>
-      <Global
-        styles={css`
-          html,
-          body {
-            height: 100%;
-          }
-        `}
-      />
       <HeroHeader
         title="FAB with motion"
         description="Floating action button with motion"
@@ -64,7 +55,7 @@ const FabScreen: React.FC<{
   return (
     <>
       <Fab
-        transition={{ duration: 0.3 }}
+        transition={{ duration: 0.25 }}
         animate={
           isOpen
             ? {
@@ -113,17 +104,19 @@ const Screen: React.FC = ({ children }) => {
       key="screen"
       animate={{
         y: -60,
-        width: window.innerWidth,
+        // width: window.innerWidth,
         opacity: 1
       }}
       initial={{
-        y: 0,
-        width: 60,
+        y: -60,
+        // y: 0,
+        // width: 60,
         opacity: 0
       }}
       exit={{
-        y: 0,
-        width: window.innerWidth,
+        y: -60,
+        // y: 0,
+        // width: window.innerWidth,
         opacity: 0,
         transition: {
           duration: 0.2

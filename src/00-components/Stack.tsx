@@ -2,7 +2,7 @@ import React from 'react'
 import { motion } from 'framer-motion'
 
 const transition = {
-  duration: 0.15,
+  duration: 0.2,
   ease: [0.43, 0.13, 0.23, 0.96]
 }
 
@@ -22,21 +22,21 @@ const Stack: React.FC<{
         enter: {
           opacity: 1,
           transition,
-          scale: 1,
           x: 0
         },
         initial: {
           opacity: 0.0,
           transition,
-          scale: 0.9,
           x: 400
         },
         exit: {
           opacity: 0.0,
           transition,
-          scale: 0.9,
           x: -400
         }
+      }}
+      style={{
+        height: '100vh'
       }}
     >
       {children}
