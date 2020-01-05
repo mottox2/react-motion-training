@@ -41,6 +41,7 @@ const DetailPage = () => {
           <Row>Share</Row>
           <Row>Get link</Row>
           <Row>Edit name</Row>
+          <Row>Other Apps</Row>
         </div>
       </BottomSheet>
     </>
@@ -108,9 +109,9 @@ const BottomSheet: React.FC<{
               }}
               onDragEnd={(e, info) => {
                 const { offset, velocity } = info
-                const swipe = swipePower(offset.x, velocity.x)
+                const swipe = swipePower(offset.y, velocity.y)
                 console.log(swipe)
-                if (swipe < -20) {
+                if (swipe > 50000) {
                   requestClose()
                 }
               }}
