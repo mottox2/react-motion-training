@@ -2,6 +2,7 @@ import React from 'react'
 import styled from '@emotion/styled/macro'
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
+import { ChevronLeft } from 'react-feather'
 
 const Hero = styled.header`
   padding: 200px 16px 16px;
@@ -23,8 +24,8 @@ const Description = styled.h1`
 
 const Back = styled(motion.span)`
   position: fixed;
-  top: 16px;
-  left: 16px;
+  top: 12px;
+  left: 12px;
   background-color: rgba(255, 255, 255, 0.9);
   border-radius: 30px;
   user-select: none;
@@ -33,7 +34,7 @@ const Back = styled(motion.span)`
 const StyledLink = styled(Link)`
   display: block;
   text-decoration: none;
-  padding: 10px 20px;
+  padding: 10px;
   color: inherit;
 `
 
@@ -45,7 +46,11 @@ const HeroHeader: React.FC<{
   return (
     <>
       <Back whileTap={{ scale: 0.9 }}>
-        <StyledLink to="/">Back</StyledLink>
+        <StyledLink to="/">
+          <ChevronLeft
+            style={{ display: 'block', position: 'relative', left: -1 }}
+          />
+        </StyledLink>
       </Back>
       <Hero
         style={{
