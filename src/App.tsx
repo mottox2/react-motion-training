@@ -1,12 +1,14 @@
 import React from 'react'
 import { Global, css } from '@emotion/core'
-import { BrowserRouter as Router, Route, Switch, Link } from 'react-router-dom'
+import styled from '@emotion/styled'
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import AccordionPage from './01-accordion'
 import ViewPager from './02-viewPager'
 import BottomSheet from './03-bottomSheet'
 import ItemLink from './00-components/ItemLink'
 import Stack from './00-components/Stack'
 import { AnimatePresence } from 'framer-motion'
+import { GitHub } from 'react-feather'
 
 const routes = [
   {
@@ -58,7 +60,7 @@ const App: React.FC = () => {
         <Route
           render={({ location }) => (
             // <AnimatePresence exitBeforeEnter initial={false}>
-            <AnimatePresence exitBeforeEnter initial={false}>
+            <AnimatePresence initial={false}>
               <Switch location={location} key={location.pathname}>
                 {routes.map(route => (
                   <Route
@@ -73,9 +75,19 @@ const App: React.FC = () => {
                     // const state = props.location.state
                     const state = { back: true }
                     return (
-                      <Stack state={state}>
-                        <ListPage />
-                      </Stack>
+                      <div
+                        style={{
+                          position: 'absolute',
+                          top: 0,
+                          right: 0,
+                          bottom: 0,
+                          left: 0
+                        }}
+                      >
+                        <Stack state={state}>
+                          <ListPage />
+                        </Stack>
+                      </div>
                     )
                   }}
                 />
@@ -90,14 +102,47 @@ const App: React.FC = () => {
 
 const ListPage = () => {
   return (
-    <ul>
-      {routes.map(route => (
-        <li key={route.path}>
-          <ItemLink to={route.path}>{route.name}</ItemLink>
-        </li>
-      ))}
-    </ul>
+    <div>
+      <ul>
+        {routes.map(route => (
+          <li key={route.path}>
+            <ItemLink to={route.path}>{route.name}</ItemLink>
+          </li>
+        ))}
+      </ul>
+      <GitHubLink
+        href="https://github.com/mottox2/react-motion-training"
+        target="_blank"
+        rel="noopener"
+      >
+        <GitHub />
+        mottox2/react-motion-training
+      </GitHubLink>
+    </div>
   )
 }
+
+const GitHubLink = styled.a`
+  display: block;
+  margin: 16px auto;
+  max-width: 320px;
+  background-color: #f5f5f5;
+  padding: 12px 16px;
+  text-align: center;
+  text-decoration: none;
+  color: inherit;
+  border-radius: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  svg {
+    margin-right: 8px;
+  }
+
+  &:hover {
+    background-color: #eee;
+  }
+`
 
 export default App

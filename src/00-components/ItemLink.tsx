@@ -10,6 +10,7 @@ const List = styled(Link)`
   padding: 16px;
   text-decoration: none;
   color: inherit;
+  background-color: white;
 `
 
 const Icon = styled(ChevronRight)`
