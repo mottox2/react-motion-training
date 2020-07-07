@@ -6,6 +6,7 @@ import AccordionPage from './01-accordion'
 import ViewPager from './02-viewPager'
 import BottomSheet from './03-bottomSheet'
 import FabWithMotion from './04-FabWithMotion'
+import { ImageViewer } from './05-ImageViewer'
 import ItemLink from './00-components/ItemLink'
 import Stack from './00-components/Stack'
 import { AnimatePresence } from 'framer-motion'
@@ -19,7 +20,7 @@ const routes = [
       <Stack>
         <AccordionPage />
       </Stack>
-    )
+    ),
   },
   {
     name: 'ViewPager',
@@ -28,7 +29,7 @@ const routes = [
       <Stack>
         <ViewPager />
       </Stack>
-    )
+    ),
   },
   {
     name: 'BottomSheet',
@@ -37,7 +38,7 @@ const routes = [
       <Stack>
         <BottomSheet />
       </Stack>
-    )
+    ),
   },
   {
     name: 'FAB with motion',
@@ -46,8 +47,17 @@ const routes = [
       <Stack>
         <FabWithMotion />
       </Stack>
-    )
-  }
+    ),
+  },
+  {
+    name: 'ImageViewer',
+    path: '/image-viewer',
+    component: () => (
+      <Stack>
+        <ImageViewer />
+      </Stack>
+    ),
+  },
 ]
 
 const App: React.FC = () => {
@@ -72,7 +82,7 @@ const App: React.FC = () => {
             // <AnimatePresence exitBeforeEnter initial={false}>
             <AnimatePresence initial={false}>
               <Switch location={location} key={location.pathname}>
-                {routes.map(route => (
+                {routes.map((route) => (
                   <Route
                     key={route.path}
                     path={route.path}
@@ -91,7 +101,7 @@ const App: React.FC = () => {
                           top: 0,
                           right: 0,
                           bottom: 0,
-                          left: 0
+                          left: 0,
                         }}
                       >
                         <Stack state={state}>
@@ -114,7 +124,7 @@ const ListPage = () => {
   return (
     <div>
       <ul>
-        {routes.map(route => (
+        {routes.map((route) => (
           <li key={route.path}>
             <ItemLink to={route.path}>{route.name}</ItemLink>
           </li>
