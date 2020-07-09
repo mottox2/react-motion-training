@@ -20,6 +20,9 @@ const Screen = styled.div`
   right: 0;
   bottom: 0;
   left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `
 
 const Image = styled.div`
@@ -36,10 +39,9 @@ const Image = styled.div`
   background-position: -80px center;
 `
 
-const Target = styled(motion.div)`
+const Target = styled(motion.img)`
   background-color: red;
-  width: 300px;
-  height: 300px;
+  background-size: cover;
 `
 
 const PreventDefaultScrollBehavior = () => {
@@ -86,35 +88,50 @@ export const FramerViewer = () => {
       console.log('end pinch ')
       setPinch(false)
     }
-    console.log(isPinch, state.offset)
+    // console.log(isPinch, state.offset)
     if (isPinch) {
-      scale.set(Math.max(state.offset[0] / 100, 1))
-      state.event?.stopPropagation()
+      const nextScale = Math.max(state.offset[0] / 100, 1)
+      scale.set(nextScale, true)
+      const maxX = ((windowSize?.width || 0) * (nextScale - 1)) / 2
+      if (Math.abs(x.get()) > maxX) {
+        // NOTE: not work?
+        const currentX = x.get()
+        const newX = currentX > 0 ? maxX : -1 * maxX
+        console.log('invalid set newX', currentX, newX)
+        x.set(newX, true)
+      }
     }
   })
+
+  // scale.onChange((latest) => {
+  //   console.log('new scale', latest)
+  //   const maxX = ((windowSize?.width || 0) * (latest - 1)) / 2
+  //   if (Math.abs(x.get()) > maxX) {
+  //     const currentX = x.get()
+  //     const newX = currentX > 0 ? maxX : -1 * maxX
+  //     console.log('invalid set newX', currentX, newX)
+  //     x.set(newX, true)
+  //   }
+  // })
   const bind2 = useDrag((state) => {
     console.log(state)
-    // if ((state.event as any).touches.length === 1)
-    //   dragControl.start(state.event!)
     x.set(state.offset[0])
     y.set(state.offset[1])
   })
-
-  const dragControl = useDragControls()
 
   return (
     <RemoveScroll>
       <PreventDefaultScrollBehavior />
       <Screen {...bind()}>
         <Target
-          style={{ x, y, opacity, scale: scale }}
-          drag={!isPinch}
-          // {...bind2()}
+          src="https://images.unsplash.com/photo-1593642532009-6ba71e22f468?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=80"
+          style={{ x, y, scale }}
+          // drag={!isPinch}
+          {...bind2()}
           // onTouchStart={(event: any) => {
           // console.log(event.touches)
           // event.preventDefault()
           // return false
-          // if (!isPinch) dragControl.start(event)
           // }}
           // onDragStart={(event: any) => {
           //   console.log(event)
@@ -127,15 +144,23 @@ export const FramerViewer = () => {
           //   console.log('pan', event)
           //   // event.preventDefault()
           // }}
-          // dragControls={dragControl}
-          // dragListener={false}
-          dragElastic={0.8}
-          dragConstraints={{
-            top: 0,
-            left: 0,
-            right: windowSize ? (windowSize.width - 300) / scale.get() : 0,
-            bottom: windowSize ? windowSize.height - 300 : 0,
-          }}
+          dragElastic={0.2}
+          dragConstraints={
+            !windowSize
+              ? { top: 0, left: 0, right: 0, bottom: 0 }
+              : {
+                  top: 0,
+                  left: Math.min(
+                    0,
+                    (-1 * (windowSize.width * (scale.get() - 1))) / 2
+                  ),
+                  right: Math.max(
+                    0,
+                    (windowSize.width * (scale.get() - 1)) / 2
+                  ),
+                  bottom: 0,
+                }
+          }
         />
       </Screen>
     </RemoveScroll>
