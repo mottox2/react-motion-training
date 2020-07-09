@@ -7,6 +7,7 @@ import ViewPager from './02-viewPager'
 import BottomSheet from './03-bottomSheet'
 import FabWithMotion from './04-FabWithMotion'
 import { ImageViewer } from './05-ImageViewer'
+import { FramerViewer } from './06-FramerViewer'
 import ItemLink from './00-components/ItemLink'
 import Stack from './00-components/Stack'
 import { AnimatePresence } from 'framer-motion'
@@ -55,6 +56,15 @@ const routes = [
     component: () => (
       <Stack>
         <ImageViewer />
+      </Stack>
+    ),
+  },
+  {
+    name: 'FramerViewer',
+    path: '/framer-viewer',
+    component: () => (
+      <Stack>
+        <FramerViewer />
       </Stack>
     ),
   },
