@@ -8,6 +8,7 @@ import BottomSheet from './03-bottomSheet'
 import FabWithMotion from './04-FabWithMotion'
 import { ImageViewer } from './05-ImageViewer'
 import { FramerViewer } from './06-FramerViewer'
+import { GestureView } from './07-GestureView'
 import ItemLink from './00-components/ItemLink'
 import Stack from './00-components/Stack'
 import { AnimatePresence } from 'framer-motion'
@@ -65,6 +66,15 @@ const routes = [
     component: () => (
       <Stack>
         <FramerViewer />
+      </Stack>
+    ),
+  },
+  {
+    name: 'GestureView',
+    path: '/gesture-view',
+    component: () => (
+      <Stack>
+        <GestureView />
       </Stack>
     ),
   },
