@@ -60,6 +60,7 @@ const useWindowSize = () => {
 export const GestureView = () => {
   const [moving, setMoving] = useState(false)
   const [position, setPosition] = useState({ x: 0, y: 0 })
+  const [currentZoom, setZoom] = useState(1)
   const windowSize = useWindowSize()
   const ref = createRef<HTMLImageElement>()
   const bind = useGesture({
@@ -69,13 +70,19 @@ export const GestureView = () => {
       const zoom = Math.min(Math.max(0.1, 1 + _zoom / 100), 5)
       ref.current!.style.transform = `scale(${zoom})`
     },
+    onWheelEnd: (state) => {
+      const [_, _zoom] = state.offset
+      const zoom = Math.min(Math.max(0.1, 1 + _zoom / 100), 5)
+      setZoom(zoom)
+    },
     onDrag: (state) => {
-      if (moving) return
+      if (moving || !ref.current!) return
       console.log('drag', position, state.offset)
       const { x, y } = position
       const [dx, dy] = state.movement
-      ref.current!.style.top = `${y + dy}px`
-      ref.current!.style.left = `${x + dx}px`
+      ref.current!.style.transform = `translate3d(${x + dx}px, ${
+        y + dy
+      }px, 0px) scale(${currentZoom})`
     },
     onDragEnd: (state) => {
       if (moving) return
@@ -87,8 +94,7 @@ export const GestureView = () => {
       ref.current!.style.transition = 'all .2s'
       const goalX = x + dx + vx * 20
       const goalY = y + dy + vy * 20
-      ref.current!.style.top = `${goalY}px`
-      ref.current!.style.left = `${goalX}px`
+      ref.current!.style.transform = `translate3d(${goalX}px, ${goalY}px, 0px) scale(${currentZoom})`
       setMoving(true)
       setPosition({ x: goalX, y: goalY })
       console.log(position, state.movement, state.vxvy, { goalX, goalY })
@@ -97,10 +103,17 @@ export const GestureView = () => {
       }, 200)
     },
     onPinch: (state) => {
+      if (!ref.current) return
       console.log('pinch', state.offset)
       const [_zoom, _] = state.offset
       const zoom = Math.min(Math.max(0.1, 1 + _zoom / 100), 5)
-      ref.current!.style.transform = `scale(${zoom})`
+      const { x, y } = position
+      ref.current!.style.transform = `translate3d(${x}px, ${y}px, 0px) scale(${zoom})`
+    },
+    onPinchEnd: (state) => {
+      const [_zoom, _] = state.offset
+      const zoom = Math.min(Math.max(0.1, 1 + _zoom / 100), 5)
+      setZoom(zoom)
     },
     onMouseDown: (e) => {
       e.preventDefault()
