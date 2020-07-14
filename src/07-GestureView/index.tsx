@@ -2,7 +2,6 @@ import React, { useState, useEffect, createRef } from 'react'
 import styled from '@emotion/styled/macro'
 import { Global } from '@emotion/core'
 import { RemoveScroll } from 'react-remove-scroll'
-import { motion } from 'framer-motion'
 import { useGesture } from 'react-use-gesture'
 
 const Screen = styled.div`
@@ -60,7 +59,7 @@ const useWindowSize = () => {
 
 export const GestureView = () => {
   const [moving, setMoving] = useState(false)
-  // const [position, setPosition] = useState({ x: 0, y: 0 })
+  const [position, setPosition] = useState({ x: 0, y: 0 })
   const windowSize = useWindowSize()
   const ref = createRef<HTMLImageElement>()
   const bind = useGesture({
@@ -72,23 +71,27 @@ export const GestureView = () => {
     },
     onDrag: (state) => {
       if (moving) return
-      console.log('drag', state.offset)
-      const [x, y] = state.offset
-      ref.current!.style.top = `${y}px`
-      ref.current!.style.left = `${x}px`
+      console.log('drag', position, state.offset)
+      const { x, y } = position
+      const [dx, dy] = state.movement
+      ref.current!.style.top = `${y + dy}px`
+      ref.current!.style.left = `${x + dx}px`
     },
     onDragEnd: (state) => {
       if (moving) return
       console.log('dragEnd', state)
-      const [x, y] = state.offset
+      const { x, y } = position
+      const [dx, dy] = state.movement
       const [vx, vy] = state.vxvy
-      ref.current!.style.top = `${y}px`
-      ref.current!.style.left = `${x}px`
 
       ref.current!.style.transition = 'all .2s'
-      ref.current!.style.top = `${y + vy * 50}px`
-      ref.current!.style.left = `${x + vx * 50}px`
+      const goalX = x + dx + vx * 20
+      const goalY = y + dy + vy * 20
+      ref.current!.style.top = `${goalY}px`
+      ref.current!.style.left = `${goalX}px`
       setMoving(true)
+      setPosition({ x: goalX, y: goalY })
+      console.log(position, state.movement, state.vxvy, { goalX, goalY })
       window.setTimeout(() => {
         setMoving(false)
       }, 200)
