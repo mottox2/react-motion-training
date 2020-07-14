@@ -59,6 +59,8 @@ const useWindowSize = () => {
 }
 
 export const GestureView = () => {
+  const [moving, setMoving] = useState(false)
+  // const [position, setPosition] = useState({ x: 0, y: 0 })
   const windowSize = useWindowSize()
   const ref = createRef<HTMLImageElement>()
   const bind = useGesture({
@@ -69,14 +71,31 @@ export const GestureView = () => {
       ref.current!.style.transform = `scale(${zoom})`
     },
     onDrag: (state) => {
+      if (moving) return
       console.log('drag', state.offset)
       const [x, y] = state.offset
       ref.current!.style.top = `${y}px`
       ref.current!.style.left = `${x}px`
     },
+    onDragEnd: (state) => {
+      if (moving) return
+      console.log('dragEnd', state)
+      const [x, y] = state.offset
+      const [vx, vy] = state.vxvy
+      ref.current!.style.top = `${y}px`
+      ref.current!.style.left = `${x}px`
+
+      ref.current!.style.transition = 'all .2s'
+      ref.current!.style.top = `${y + vy * 50}px`
+      ref.current!.style.left = `${x + vx * 50}px`
+      setMoving(true)
+      window.setTimeout(() => {
+        setMoving(false)
+      }, 200)
+    },
     onPinch: (state) => {
       console.log('pinch', state.offset)
-      const [_, _zoom] = state.offset
+      const [_zoom, _] = state.offset
       const zoom = Math.min(Math.max(0.1, 1 + _zoom / 100), 5)
       ref.current!.style.transform = `scale(${zoom})`
     },
@@ -84,6 +103,10 @@ export const GestureView = () => {
       e.preventDefault()
     },
   })
+
+  useEffect(() => {
+    if (!moving) if (ref.current) ref.current!.style.transition = ''
+  }, [moving, ref])
 
   return (
     <RemoveScroll>
