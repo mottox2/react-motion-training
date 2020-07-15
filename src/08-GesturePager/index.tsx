@@ -19,10 +19,20 @@ const Page = styled.div`
 const colors = ['red', 'orange', 'blue']
 
 export const GesturePager = () => {
-  const pages = [1, 2, 3].map((i) => () => (
-    <Page key={i} style={{ backgroundColor: colors[i - 1] }}>
-      <img src={`https://dummyimage.com/600x400/060b40/fff&text=page${i}`} />
-    </Page>
-  ))
+  const pages = [
+    () => {
+      return (
+        <div style={{ height: '110vh', backgroundColor: 'f5f5f5' }}>
+          {' '}
+          <p>Hello world</p>
+        </div>
+      )
+    },
+    ...[1, 2, 3].map((i) => () => (
+      <Page key={i} style={{ backgroundColor: colors[i - 1] }}>
+        <img src={`https://dummyimage.com/600x400/060b40/fff&text=page${i}`} />
+      </Page>
+    )),
+  ]
   return <Pager pages={pages} />
 }
