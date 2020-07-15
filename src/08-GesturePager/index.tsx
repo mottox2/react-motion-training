@@ -24,7 +24,7 @@ export const GesturePager = () => {
       return (
         <div style={{ height: '110vh', backgroundColor: 'f5f5f5' }}>
           {' '}
-          <p>Hello world</p>
+          <p>Hello スクロールできる画面</p>
         </div>
       )
     },

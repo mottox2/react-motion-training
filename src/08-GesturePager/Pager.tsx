@@ -90,6 +90,8 @@ export const Pager = ({ pages }: any) => {
   const ref = useRef<HTMLDivElement>(null)
   const zoomRef = useRef<HTMLDivElement>(null)
   const panRef = useRef<HTMLDivElement>(null)
+  const isFirstPage = current === 0
+  const isLastPage = current === pages.length - 1
 
   useEffect(() => {
     setZoom(1)
@@ -114,8 +116,8 @@ export const Pager = ({ pages }: any) => {
           const [dx, dy] = state.movement
           const maxX = (windowSize!.width * (zoom - 1)) / zoom / 2
           const maxY = (windowSize!.height * (zoom - 1)) / zoom / 2
-          const nextX = inRange(x + dx, maxX)
-          const nextY = inRange(y + dy, maxY)
+          const nextX = inRange(x + dx / zoom, maxX)
+          const nextY = inRange(y + dy / zoom, maxY)
           console.log({ dx: x + dx, maxX, nextX, maxY, zoom })
           return (panRef.current.style.transform = `translate3d(${nextX}px, ${nextY}px, 0)`)
         }
@@ -130,19 +132,19 @@ export const Pager = ({ pages }: any) => {
           const [dx, dy] = state.movement
           const maxX = (windowSize!.width * (zoom - 1)) / zoom / 2
           const maxY = (windowSize!.height * (zoom - 1)) / zoom / 2
-          const nextX = inRange(x + dx, maxX)
-          const nextY = inRange(y + dy, maxY)
-          // maxを考慮して入れる。
+          const nextX = inRange(x + dx / zoom, maxX)
+          const nextY = inRange(y + dy / zoom, maxY)
+          // zoomを考慮したx,yを計算する。
           return setPosition({ x: nextX, y: nextY })
         }
 
         const dx = state.movement[0]
         let next = current
         let translateX = 0
-        if (dx < -100) {
+        if (dx < -100 && !isLastPage) {
           next = current + 1
           translateX = windowSize!.width * -1
-        } else if (dx > 100) {
+        } else if (dx > 100 && !isFirstPage) {
           next = current - 1
           translateX = windowSize!.width
         }
