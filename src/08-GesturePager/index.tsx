@@ -5,7 +5,7 @@ import { Pager } from './Pager'
 
 const Page = styled.div`
   background-color: red;
-  height: 100%;
+  height: 120%;
 `
 
 const colors = ['red', 'orange', 'blue']

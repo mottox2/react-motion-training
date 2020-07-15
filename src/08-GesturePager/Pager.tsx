@@ -47,6 +47,7 @@ const Page = styled.div`
   width: 100%;
   height: 100%;
   position: absolute;
+  overflow-y: auto;
 `
 
 const PrevPage = styled(Page)`
@@ -57,6 +58,22 @@ const CurrentPage = styled(Page)`
 `
 const NextPage = styled(Page)`
   left: 100%;
+`
+
+const duration = 200
+
+const PageView = styled.div`
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 8px 12px;
+  z-index: 10;
+  background-color: white;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+  min-width: 40px;
+  text-align: center;
 `
 
 export const Pager = ({ pages }: any) => {
@@ -86,7 +103,7 @@ export const Pager = ({ pages }: any) => {
             ref.current!.style.transform = `translateX(0px)`
             ref.current!.style.transition = 'all 0s'
             setCurrent((current) => current + 1)
-          }, 100)
+          }, duration)
         } else if (dx > 100) {
           ref.current!.style.transform = `translateX(${windowSize!.width}px)`
           ref.current!.style.transition = 'all .1s'
@@ -95,14 +112,14 @@ export const Pager = ({ pages }: any) => {
             ref.current!.style.transform = `translateX(0px)`
             ref.current!.style.transition = 'all 0s'
             setCurrent((current) => current - 1)
-          }, 100)
+          }, duration)
         } else {
           ref.current!.style.transform = `translateX(0px)`
           ref.current!.style.transition = 'all .1s'
           setTimeout(() => {
             ref.current!.style.transform = `translateX(0px)`
             ref.current!.style.transition = 'all 0s'
-          }, 100)
+          }, duration)
         }
       },
       onMouseDown: (e) => {
@@ -112,15 +129,16 @@ export const Pager = ({ pages }: any) => {
     {
       drag: {
         lockDirection: true,
+        axis: 'x',
       },
     }
   )
 
   return (
     <RemoveScroll>
-      <PreventDefaultScrollBehavior />
+      {/* <PreventDefaultScrollBehavior /> */}
+      <PageView>{current}</PageView>
       <Screen ref={ref} {...bind()}>
-        {current}
         {useMemo(() => {
           return [-1, 0, 1].map((index) => {
             const pageIndex = current + index
