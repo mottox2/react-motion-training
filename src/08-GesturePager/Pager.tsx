@@ -66,7 +66,7 @@ const duration = 200
 
 const PageView = styled.div`
   position: fixed;
-  bottom: 50%;
+  bottom: 0;
   left: 50%;
   transform: translateX(-50%);
   padding: 8px 12px;
@@ -78,30 +78,12 @@ const PageView = styled.div`
   text-align: center;
 `
 
-const useZoomScale = () => {
-  const [scale, setScale] = useState(1)
-  const calcScale = useCallback(() => {
-    console.log(
-      'calc',
-      document.body.style.zoom,
-      window.innerWidth,
-      window.outerWidth,
-      document.body.clientWidth,
-      window.document.documentElement.clientWidth
-    )
-    // setScale(document.body.clientWidth / window.innerWidth)
-  }, [setScale])
-  return { scale, calcScale }
-}
-
 export const Pager = ({ pages }: any) => {
   const [current, setCurrent] = useState(0)
-  const { scale, calcScale } = useZoomScale()
-  console.log({ scale })
-  const [moving, setMoving] = useState(false)
-  const [position, setPosition] = useState({ x: 0, y: 0 })
+  const [zoom, setZoom] = useState(1)
   const windowSize = useWindowSize()
   const ref = createRef<HTMLDivElement>()
+  const zoomRef = createRef<HTMLDivElement>()
   const bind = useGesture(
     {
       onDrag: (state) => {
@@ -148,10 +130,18 @@ export const Pager = ({ pages }: any) => {
           }, duration)
         }
       },
-      onPinchEnd: () => {
+      onPinch: (state) => {
+        if (!zoomRef.current) return
+        const [_zoom, _] = state.offset
+        const zoom = Math.min(Math.max(1, 1 + _zoom / 100), 5)
+        zoomRef.current!.style.transform = `scale(${zoom})`
+      },
+      onPinchEnd: (state) => {
+        const [_zoom, _] = state.offset
+        const zoom = Math.min(Math.max(1, 1 + _zoom / 100), 5)
         setTimeout(() => {
-          calcScale()
-        }, 100)
+          setZoom(zoom)
+        }, duration)
       },
       onMouseDown: (e) => {
         e.preventDefault()
@@ -169,7 +159,9 @@ export const Pager = ({ pages }: any) => {
     <div>
       <RemoveScroll allowPinchZoom={true}>
         {/* <PreventDefaultScrollBehavior /> */}
-        <PageView>{current}</PageView>
+        <PageView>
+          {current} {Math.round(zoom * 100)}%
+        </PageView>
         <Container {...bind()}>
           <div
             style={{
@@ -180,7 +172,7 @@ export const Pager = ({ pages }: any) => {
             ref={ref}
           >
             {useMemo(() => {
-              return [-1, 0, 1].map((index) => {
+              return [-1, 1].map((index) => {
                 const pageIndex = current + index
                 const page = pages[pageIndex]
                 console.log(page)
@@ -191,7 +183,9 @@ export const Pager = ({ pages }: any) => {
                 return page()
               })
             }, [pages, current])}
-            {/* </div> */}
+            {pages[current] && (
+              <CurrentPage ref={zoomRef}>{pages[current]()}</CurrentPage>
+            )}
           </div>
         </Container>
       </RemoveScroll>
