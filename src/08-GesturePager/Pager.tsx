@@ -92,6 +92,7 @@ export const Pager = ({ pages }: any) => {
   const panRef = useRef<HTMLDivElement>(null)
   const isFirstPage = current === 0
   const isLastPage = current === pages.length - 1
+  const tapCount = useRef(0)
 
   useEffect(() => {
     setZoom(1)
@@ -103,7 +104,26 @@ export const Pager = ({ pages }: any) => {
   const bind = useGesture(
     {
       onDrag: (state) => {
-        if (!ref.current || state.tap) return // tap
+        if (state.tap) {
+          tapCount.current = tapCount.current + 1
+          // リセットするタイミングで1のままならシングルタップとして認識してよさそう。
+          setTimeout(() => (tapCount.current = 0), 200)
+          if (tapCount.current > 1) {
+            const nextZoom = zoom === 1 ? 2 : 1
+            zoomRef.current!.style.transition = 'all .08s'
+            panRef.current!.style.transition = 'all .08s'
+            zoomRef.current!.style.transform = `scale(${nextZoom})`
+            panRef.current!.style.transform = 'translate3d(0, 0, 0)'
+            setTimeout(() => {
+              panRef.current!.style.transition = ''
+              zoomRef.current!.style.transition = ''
+            }, 150)
+            setZoom(nextZoom)
+            setPosition({ x: 0, y: 0 })
+          }
+          return
+        }
+        if (!ref.current) return
         // 2本目の指が検出されたタイミングでドラッグ操作を強制停止
         if (state.event?.constructor.name === 'TouchEvent') {
           const touchEvent = state.event as React.TouchEvent
@@ -126,15 +146,21 @@ export const Pager = ({ pages }: any) => {
         ref.current.style.transform = `translateX(${dx}px)`
       },
       onDragEnd: (state) => {
+        if (state.tap) return
         if (!ref.current) return
         if (zoom > 1) {
           const { x, y } = position
           const [dx, dy] = state.movement
+          const [vx, vy] = state.vxvy
           const maxX = (windowSize!.width * (zoom - 1)) / zoom / 2
           const maxY = (windowSize!.height * (zoom - 1)) / zoom / 2
-          const nextX = inRange(x + dx / zoom, maxX)
-          const nextY = inRange(y + dy / zoom, maxY)
-          // zoomを考慮したx,yを計算する。
+          const nextX = inRange(x + dx / zoom + vx * 20, maxX)
+          const nextY = inRange(y + dy / zoom + vy * 20, maxY)
+          panRef.current!.style.transform = `translate3d(${nextX}px, ${nextY}px, 0)`
+          panRef.current!.style.transition = 'all .1s'
+          setTimeout(() => {
+            panRef.current!.style.transition = ''
+          }, 300)
           return setPosition({ x: nextX, y: nextY })
         }
 
@@ -150,7 +176,7 @@ export const Pager = ({ pages }: any) => {
         }
 
         ref.current!.style.transform = `translateX(${translateX}px)`
-        ref.current!.style.transition = 'all .1s'
+        ref.current!.style.transition = 'all .2s'
 
         setTimeout(() => {
           ref.current!.style.transform = `translateX(0px)`
@@ -161,29 +187,26 @@ export const Pager = ({ pages }: any) => {
       onPinch: (state) => {
         if (!zoomRef.current) return
         const { x, y } = position
-        const [_zoom, _] = state.offset
-        const zoom = Math.min(Math.max(1, 1 + _zoom / 100), 5)
-        const maxX = (windowSize!.width * (zoom - 1)) / zoom / 2
-        const maxY = (windowSize!.height * (zoom - 1)) / zoom / 2
+        const [_zoom, _] = state.movement
+        const nextZoom = Math.min(Math.max(1, zoom + _zoom / 100), 3)
+        const maxX = (windowSize!.width * (nextZoom - 1)) / nextZoom / 2
+        const maxY = (windowSize!.height * (nextZoom - 1)) / nextZoom / 2
         const nextX = inRange(x, maxX)
         const nextY = inRange(y, maxY)
-        console.log('pinch')
         panRef.current!.style.transform = `translate3d(${nextX}px, ${nextY}px, 0)`
-        zoomRef.current!.style.transform = `scale(${zoom})`
+        zoomRef.current!.style.transform = `scale(${nextZoom})`
       },
       onPinchEnd: (state) => {
-        const [_zoom, _] = state.offset
+        const [_zoom, _] = state.movement
         const { x, y } = position
-        const zoom = Math.min(Math.max(1, 1 + _zoom / 100), 5)
-        const maxX = (windowSize!.width * (zoom - 1)) / zoom / 2
-        const maxY = (windowSize!.height * (zoom - 1)) / zoom / 2
+        const nextZoom = Math.min(Math.max(1, zoom + _zoom / 100), 3)
+        const maxX = (windowSize!.width * (nextZoom - 1)) / nextZoom / 2
+        const maxY = (windowSize!.height * (nextZoom - 1)) / nextZoom / 2
         const nextX = inRange(x, maxX)
         const nextY = inRange(y, maxY)
         panRef.current!.style.transform = `translate3d(${nextX}px, ${nextY}px, 0)`
-        setTimeout(() => {
-          setPosition({ x: nextX, y: nextY })
-          setZoom(zoom)
-        }, duration)
+        setPosition({ x: nextX, y: nextY })
+        setZoom(nextZoom)
       },
       onMouseDown: (e) => {
         e.preventDefault()
@@ -213,7 +236,6 @@ export const Pager = ({ pages }: any) => {
             return [-1, 1].map((index) => {
               const pageIndex = current + index
               const page = pages[pageIndex]
-              console.log(page)
               if (!page) return null
               if (index === -1)
                 return <PrevPage key={pageIndex}>{page()}</PrevPage>

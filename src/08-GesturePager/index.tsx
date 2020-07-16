@@ -11,6 +11,11 @@ const Page = styled.div`
   height: 100%;
 `
 
+const Image = styled.img`
+  pointer-events: none;
+  user-select: none;
+`
+
 // * ズーム状態を判別するやつ
 // * ページの内部を画像に変えて操作感の確認
 // * ページ変更する範囲をwindowのサイズから決定するやつ
@@ -30,7 +35,9 @@ export const GesturePager = () => {
     },
     ...[1, 2, 3].map((i) => () => (
       <Page key={i} style={{ backgroundColor: colors[i - 1] }}>
-        <img src={`https://dummyimage.com/600x400/060b40/fff&text=page${i}`} />
+        <Image
+          src={`https://dummyimage.com/600x400/060b40/fff&text=page${i}`}
+        />
       </Page>
     )),
   ]
