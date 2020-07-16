@@ -1,4 +1,4 @@
-import React, { useState, useEffect, createRef } from 'react'
+import React from 'react'
 import styled from '@emotion/styled/macro'
 
 import { Pager } from './Pager'
@@ -16,10 +16,9 @@ const Image = styled.img`
   user-select: none;
 `
 
-// * ズーム状態を判別するやつ
-// * ページの内部を画像に変えて操作感の確認
 // * ページ変更する範囲をwindowのサイズから決定するやつ
-// * ページングの範囲を指定するやつ
+// * 画像のアスペクト比を考慮したドラッグ領域の設定
+// * リサイズすする
 
 const colors = ['red', 'orange', 'blue']
 
