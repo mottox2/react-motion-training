@@ -31,6 +31,7 @@ export const usePager = ({ pages }: { pages: (() => JSX.Element)[] }) => {
   const [current, setCurrent] = useState(0)
   const [zoom, setZoom] = useState(1)
   const [position, setPosition] = useState({ x: 0, y: 0 })
+  // TODO: containerSizeにする
   const windowSize = useWindowSize()
   const ref = useRef<HTMLDivElement>(null)
   const zoomRef = useRef<HTMLDivElement>(null)
@@ -54,17 +55,28 @@ export const usePager = ({ pages }: { pages: (() => JSX.Element)[] }) => {
           // リセットするタイミングで1のままならシングルタップとして認識してよさそう。
           setTimeout(() => (tapCount.current = 0), 200)
           if (tapCount.current > 1) {
+            console.log(state.xy)
+            const [x, y] = state.xy
             const nextZoom = zoom === 1 ? 2 : 1
+            const nextX = ((x - (windowSize?.width ?? 0) / 2) * -1) / nextZoom
+            const nextY = ((y - (windowSize?.height ?? 0) / 2) * -1) / nextZoom
+            // 本来はzoom率による座標制限の処理を書き加えるべき
             zoomRef.current!.style.transition = 'all .08s'
             panRef.current!.style.transition = 'all .08s'
             zoomRef.current!.style.transform = `scale(${nextZoom})`
-            panRef.current!.style.transform = 'translate3d(0, 0, 0)'
+            if (nextZoom === 1) {
+              panRef.current!.style.transform = `translate3d(0, 0, 0)`
+            } else {
+              panRef.current!.style.transform = `translate3d(${nextX}px, ${nextY}px, 0)`
+            }
             setTimeout(() => {
               panRef.current!.style.transition = ''
               zoomRef.current!.style.transition = ''
             }, 150)
             setZoom(nextZoom)
-            setPosition({ x: 0, y: 0 })
+            setPosition(
+              nextZoom === 1 ? { x: 0, y: 0 } : { x: nextX, y: nextY }
+            )
           }
           return
         }
