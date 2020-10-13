@@ -66,7 +66,7 @@ export const GestureView = () => {
     onWheel: (state) => {
       console.log('wheel', state.offset)
       const [_, _zoom] = state.offset
-      const zoom = Math.min(Math.max(0.1, 1 + _zoom / 100), 5)
+      const zoom = Math.min(Math.max(1, 1 + _zoom / 100), 5)
       ref.current!.style.transform = `scale(${zoom})`
     },
     onDrag: (state) => {
@@ -97,6 +97,7 @@ export const GestureView = () => {
       }, 200)
     },
     onPinch: (state) => {
+      if (!ref.current) return
       console.log('pinch', state.offset)
       const [_zoom, _] = state.offset
       const zoom = Math.min(Math.max(0.1, 1 + _zoom / 100), 5)

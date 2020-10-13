@@ -26,6 +26,9 @@ const Screen = styled.div`
   right: 0;
   bottom: 0;
   left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `
 
 const PreventDefaultScrollBehavior = () => {
@@ -63,10 +66,11 @@ export const ImageViewer = () => {
     x: 0,
     y: 0,
     zoom: 1,
-    easing: easings.easeCircleOut,
+    // easing: easings.easeCubicOut,
+    // duration: 10,
     config: {
       mass: 1,
-      tension: 320,
+      tension: 300,
       friction: 22,
     },
   }))
@@ -80,7 +84,15 @@ export const ImageViewer = () => {
       },
       onDrag: ({ previous, down, movement, offset, initial, xy, last }) => {
         console.log(xy, initial, movement, offset, last)
-        set({ x: offset[0], y: offset[1], immediate: false })
+        set({
+          x: offset[0],
+          y: offset[1],
+          immediate: down,
+          config: {
+            // velocity: 3,
+            // decay: true,
+          },
+        })
         // setPosition({ x: startX + movement[0], y: startY + movement[1] })
       },
     },
@@ -91,10 +103,10 @@ export const ImageViewer = () => {
       },
       drag: {
         bounds: {
-          top: 0,
-          bottom: windowSize ? windowSize.height - 400 : 0,
-          left: 0,
-          right: windowSize ? windowSize.width - 300 : 0,
+          top: windowSize ? (-1 * (windowSize.height - 400)) / 2 : 0,
+          bottom: windowSize ? (windowSize.height - 400) / 2 : 0,
+          left: windowSize ? (-1 * (windowSize.width - 300)) / 2 : 0,
+          right: windowSize ? (windowSize.width - 300) / 2 : 0,
         },
         rubberband: 1,
       },

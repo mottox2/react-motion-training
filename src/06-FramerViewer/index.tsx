@@ -122,21 +122,28 @@ export const FramerViewer = () => {
   return (
     <RemoveScroll>
       <PreventDefaultScrollBehavior />
+      {/* <Screen> */}
       <Screen {...bind()}>
         <Target
           src="https://images.unsplash.com/photo-1593642532009-6ba71e22f468?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=80"
           style={{ x, y, scale }}
-          // drag={!isPinch}
-          {...bind2()}
-          // onTouchStart={(event: any) => {
-          // console.log(event.touches)
-          // event.preventDefault()
-          // return false
+          drag={!isPinch}
+          // {...bind2()}
+          onTouchStart={(event: any) => {
+            console.log('start', event, event.touches)
+            if (event.touches.length > 1) event.preventDefault()
+          }}
+          // onTouchMove={(event: any) => {
+          //   console.log('move', event)
           // }}
-          // onDragStart={(event: any) => {
-          //   console.log(event)
-          //   event.preventDefault()
-          // }}
+          onDragStart={(event: any) => {
+            console.log(event)
+            event.preventDefault()
+          }}
+          onDrag={(event: any) => {
+            console.log(event)
+            event.preventDefault()
+          }}
           // onDrag={(event: TouchEvent, info: PanInfo) => {
           //   console.log(event, info)
           // }}
@@ -144,7 +151,7 @@ export const FramerViewer = () => {
           //   console.log('pan', event)
           //   // event.preventDefault()
           // }}
-          dragElastic={0.2}
+          dragElastic={0.3}
           dragConstraints={
             !windowSize
               ? { top: 0, left: 0, right: 0, bottom: 0 }
