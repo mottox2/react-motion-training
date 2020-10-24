@@ -6,8 +6,6 @@ import AccordionPage from './01-accordion'
 import ViewPager from './02-viewPager'
 import BottomSheet from './03-bottomSheet'
 import FabWithMotion from './04-FabWithMotion'
-import { ImageViewer } from './05-ImageViewer'
-import { FramerViewer } from './06-FramerViewer'
 import { GestureView } from './07-GestureView'
 import { GesturePager } from './08-GesturePager'
 import ItemLink from './00-components/ItemLink'
@@ -49,24 +47,6 @@ const routes = [
     component: () => (
       <Stack>
         <FabWithMotion />
-      </Stack>
-    ),
-  },
-  {
-    name: 'ImageViewer',
-    path: '/image-viewer',
-    component: () => (
-      <Stack>
-        <ImageViewer />
-      </Stack>
-    ),
-  },
-  {
-    name: 'FramerViewer',
-    path: '/framer-viewer',
-    component: () => (
-      <Stack>
-        <FramerViewer />
       </Stack>
     ),
   },
