@@ -11,7 +11,7 @@ import { GesturePager } from './08-GesturePager'
 import ItemLink from './00-components/ItemLink'
 import Stack from './00-components/Stack'
 import { AnimatePresence } from 'framer-motion'
-import { GitHub } from 'react-feather'
+// import { GitHub } from 'react-feather'
 
 const routes = [
   {
@@ -145,11 +145,11 @@ const ListPage = () => {
         target="_blank"
         rel="noopener"
       >
-        <GitHub />
+        {/* <GitHub /> */}
         mottox2/react-motion-training
       </GitHubLink>
     </div>
-  )
+  );
 }
 
 const GitHubLink = styled.a`

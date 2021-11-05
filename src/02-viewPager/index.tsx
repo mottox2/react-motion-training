@@ -1,5 +1,5 @@
 import React from 'react'
-import styled from '@emotion/styled/macro'
+import styled from "@emotion/styled";
 import ViewPager from './ViewPager'
 
 import HeroHeader from '../00-components/HeroHeader'

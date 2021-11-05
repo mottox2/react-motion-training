@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import styled from '@emotion/styled/macro'
+import styled from "@emotion/styled";
 import { RemoveScroll } from 'react-remove-scroll'
 import Portal from '../00-components/Portal'
 

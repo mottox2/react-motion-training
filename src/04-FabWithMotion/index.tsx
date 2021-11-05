@@ -1,14 +1,14 @@
 import React, { useState } from 'react'
 import { motion, AnimatePresence, useInvertedScale } from 'framer-motion'
-import styled from '@emotion/styled/macro'
+import styled from "@emotion/styled";
 
-import HeroHeader from '../00-components/HeroHeader'
-import { Plus } from 'react-feather'
+import HeroHeader from "../00-components/HeroHeader";
+// import { Plus } from 'react-feather'
 
-const mainColor = '#F57C00'
+const mainColor = "#F57C00";
 
 const FabWithMotion = () => {
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(false);
 
   return (
     <>
@@ -17,14 +17,14 @@ const FabWithMotion = () => {
         description="Floating action button with motion"
         color={mainColor}
       />
-      <div style={{ margin: '0 auto', maxWidth: 720 }}>
+      <div style={{ margin: "0 auto", maxWidth: 720 }}>
         <div style={{ margin: 16 }}>
           <Button onClick={() => setOpen(!open)}>Open</Button>
         </div>
       </div>
       <FabScreen isOpen={open} toggleOpen={() => setOpen(!open)}>
         <Header>New Post</Header>
-        <div style={{ padding: 16, color: '#333' }}>
+        <div style={{ padding: 16, color: "#333" }}>
           <p>
             Material
             Designにある、FABのモーションを真似したいモチベーションで作ってます。
@@ -33,8 +33,8 @@ const FabWithMotion = () => {
         </div>
       </FabScreen>
     </>
-  )
-}
+  );
+};
 
 const Header = styled.div`
   background-color: #3799de;
@@ -46,28 +46,28 @@ const Header = styled.div`
   font-weight: bold;
   display: flex;
   align-items: center;
-`
+`;
 
 const FabScreen: React.FC<{
-  isOpen: boolean
-  toggleOpen: () => void
+  isOpen: boolean;
+  toggleOpen: () => void;
 }> = ({ isOpen, toggleOpen, children }) => {
   return (
     <>
       <Fab
         transition={{
           duration: 0.3,
-          ease: [0.43, 0.13, 0.23, 0.96]
+          ease: [0.43, 0.13, 0.23, 0.96],
         }}
         animate={
           isOpen
             ? {
-                width: '100%',
-                height: '100%',
+                width: "100%",
+                height: "100%",
                 y: 20,
                 x: 20,
                 borderRadius: 0,
-                color: '#fff'
+                color: "#fff",
               }
             : {
                 width: 60,
@@ -75,29 +75,29 @@ const FabScreen: React.FC<{
                 y: 0,
                 x: 0,
                 borderRadius: 30,
-                color: '#333'
+                color: "#333",
               }
         }
       >
         <IconWrapper
           onClick={toggleOpen}
           animate={{
-            rotate: isOpen ? 135 : 0
+            rotate: isOpen ? 135 : 0,
           }}
           style={{
             zIndex: 20,
-            position: 'relative'
+            position: "relative",
           }}
         >
-          <Plus />
+          {/* <Plus /> */}
         </IconWrapper>
         <AnimatePresence>
           {isOpen && <Screen>{children}</Screen>}
         </AnimatePresence>
       </Fab>
     </>
-  )
-}
+  );
+};
 
 const Screen: React.FC = ({ children }) => {
   const inverted = useInvertedScale()

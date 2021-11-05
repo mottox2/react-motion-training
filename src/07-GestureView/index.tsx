@@ -1,5 +1,5 @@
 import React, { useState, useEffect, createRef } from 'react'
-import styled from '@emotion/styled/macro'
+import styled from "@emotion/styled";
 import { Global } from '@emotion/core'
 import { RemoveScroll } from 'react-remove-scroll'
 import { useGesture } from 'react-use-gesture'
