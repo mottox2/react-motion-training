@@ -5,18 +5,17 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import AccordionPage from './01-accordion'
 import ViewPager from './02-viewPager'
 import BottomSheet from './03-bottomSheet'
-import FabWithMotion from './04-FabWithMotion'
-import { GestureView } from './07-GestureView'
-import { GesturePager } from './08-GesturePager'
-import ItemLink from './00-components/ItemLink'
-import Stack from './00-components/Stack'
-import { AnimatePresence } from 'framer-motion'
+import FabWithMotion from "./04-FabWithMotion";
+import { GesturePager } from "./08-GesturePager";
+import ItemLink from "./00-components/ItemLink";
+import Stack from "./00-components/Stack";
+import { AnimatePresence } from "framer-motion";
 // import { GitHub } from 'react-feather'
 
 const routes = [
   {
-    name: 'Accordion',
-    path: '/accordion',
+    name: "Accordion",
+    path: "/accordion",
     component: () => (
       <Stack>
         <AccordionPage />
@@ -24,8 +23,8 @@ const routes = [
     ),
   },
   {
-    name: 'ViewPager',
-    path: '/view-pager',
+    name: "ViewPager",
+    path: "/view-pager",
     component: () => (
       <Stack>
         <ViewPager />
@@ -33,8 +32,8 @@ const routes = [
     ),
   },
   {
-    name: 'BottomSheet',
-    path: '/bottom-sheet',
+    name: "BottomSheet",
+    path: "/bottom-sheet",
     component: () => (
       <Stack>
         <BottomSheet />
@@ -42,8 +41,8 @@ const routes = [
     ),
   },
   {
-    name: 'FAB with motion',
-    path: '/fab-with-motion',
+    name: "FAB with motion",
+    path: "/fab-with-motion",
     component: () => (
       <Stack>
         <FabWithMotion />
@@ -51,24 +50,15 @@ const routes = [
     ),
   },
   {
-    name: 'GestureView',
-    path: '/gesture-view',
-    component: () => (
-      <Stack>
-        <GestureView />
-      </Stack>
-    ),
-  },
-  {
-    name: 'GesturePager',
-    path: '/gesture-pager',
+    name: "GesturePager",
+    path: "/gesture-pager",
     component: () => (
       <Stack>
         <GesturePager />
       </Stack>
     ),
   },
-]
+];
 
 const App: React.FC = () => {
   return (
